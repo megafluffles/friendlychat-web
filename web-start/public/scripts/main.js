@@ -16,10 +16,14 @@
 'use strict';
 
 // Signs-in Friendly Chat.
-function signIn() {
+function signInGoogle() {
   // Sign into Firebase using popup auth & Google as the identity provider.
   var provider = new firebase.auth.GoogleAuthProvider();
   firebase.auth().signInWithPopup(provider);
+}
+
+function signInGuest() {
+  firebase.auth().signInAnonymously();
 }
 
 // Signs-out of Friendly Chat.
@@ -127,8 +131,9 @@ function authStateObserver(user) {
     userPicElement.removeAttribute('hidden');
     signOutButtonElement.removeAttribute('hidden');
 
-    // Hide sign-in button.
-    signInButtonElement.setAttribute('hidden', 'true');
+    // Hide sign-in buttons.
+    signInGoogleButtonElement.setAttribute('hidden', 'true');
+    signInGuestButtonElement.setAttribute('hidden', 'true');
 
     // We save the Firebase Messaging Device token and enable notifications.
     saveMessagingDeviceToken();
@@ -138,8 +143,9 @@ function authStateObserver(user) {
     userPicElement.setAttribute('hidden', 'true');
     signOutButtonElement.setAttribute('hidden', 'true');
 
-    // Show sign-in button.
-    signInButtonElement.removeAttribute('hidden');
+    // Show sign-in buttons.
+    signInGoogleButtonElement.removeAttribute('hidden');
+    signInGuestButtonElement.removeAttribute('hidden');
   }
 }
 
@@ -296,14 +302,16 @@ var imageFormElement = document.getElementById('image-form');
 var mediaCaptureElement = document.getElementById('mediaCapture');
 var userPicElement = document.getElementById('user-pic');
 var userNameElement = document.getElementById('user-name');
-var signInButtonElement = document.getElementById('sign-in');
+var signInGoogleButtonElement = document.getElementById('sign-in-google');
+var signInGuestButtonElement = document.getElementById('sign-in-guest');
 var signOutButtonElement = document.getElementById('sign-out');
 var signInSnackbarElement = document.getElementById('must-signin-snackbar');
 
 // Saves message on form submit.
 messageFormElement.addEventListener('submit', onMessageFormSubmit);
 signOutButtonElement.addEventListener('click', signOut);
-signInButtonElement.addEventListener('click', signIn);
+signInGoogleButtonElement.addEventListener('click', signInGoogle);
+signInGuestButtonElement.addEventListener('click', signInGuest);
 
 // Toggle for the button.
 messageInputElement.addEventListener('keyup', toggleButton);
